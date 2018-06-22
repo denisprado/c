@@ -44,6 +44,7 @@
 import http.server
 import requests
 from urllib.parse import unquote, parse_qs
+import os
 
 memory = {}
 
@@ -71,7 +72,7 @@ def CheckURI(uri, timeout=5):
     
     try:
         r = requests.get(uri,  timeout=timeout)
-        if (r.status_code == requests.codes.ok):
+        if (r.status_code == 200):
             return True
     
     except requests.RequestException:
@@ -126,7 +127,7 @@ class Shortener(http.server.BaseHTTPRequestHandler):
             # 3. Serve a 400 error with a useful message.
             self.send_response(400)
             self.end_headers()
-            self.wfile.write("Missing some field!")
+            self.wfile.write("Missing some field!").encode()
 
 
         longuri = params["longuri"][0]
